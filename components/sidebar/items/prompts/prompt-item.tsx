@@ -16,42 +16,43 @@ export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
   const [content, setContent] = useState(prompt.content)
   const [isTyping, setIsTyping] = useState(false)
   return (
-    <SidebarItem
-      item={prompt}
-      isTyping={isTyping}
-      contentType="prompts"
-      icon={<IconPencil size={30} />}
-      updateState={{ name, content }}
-      renderInputs={() => (
-        <>
-          <div className="space-y-1">
-            <Label>Name</Label>
+    // <SidebarItem
+    //   item={prompt}
+    //   isTyping={isTyping}
+    //   contentType="prompts"
+    //   icon={<IconPencil size={30} />}
+    //   updateState={{ name, content }}
+    //   renderInputs={() => (
+    //     <>
+    //       <div className="space-y-1">
+    //         <Label>Name</Label>
 
-            <Input
-              placeholder="Prompt name..."
-              value={name}
-              onChange={e => setName(e.target.value)}
-              maxLength={PROMPT_NAME_MAX}
-              onCompositionStart={() => setIsTyping(true)}
-              onCompositionEnd={() => setIsTyping(false)}
-            />
-          </div>
+    //         <Input
+    //           placeholder="Prompt name..."
+    //           value={name}
+    //           onChange={e => setName(e.target.value)}
+    //           maxLength={PROMPT_NAME_MAX}
+    //           onCompositionStart={() => setIsTyping(true)}
+    //           onCompositionEnd={() => setIsTyping(false)}
+    //         />
+    //       </div>
 
-          <div className="space-y-1">
-            <Label>Prompt</Label>
+    //       <div className="space-y-1">
+    //         <Label>Prompt</Label>
 
-            <TextareaAutosize
-              placeholder="Prompt..."
-              value={content}
-              onValueChange={setContent}
-              minRows={6}
-              maxRows={20}
-              onCompositionStart={() => setIsTyping(true)}
-              onCompositionEnd={() => setIsTyping(false)}
-            />
-          </div>
-        </>
-      )}
-    />
+    //         <TextareaAutosize
+    //           placeholder="Prompt..."
+    //           value={content}
+    //           onValueChange={setContent}
+    //           minRows={6}
+    //           maxRows={20}
+    //           onCompositionStart={() => setIsTyping(true)}
+    //           onCompositionEnd={() => setIsTyping(false)}
+    //         />
+    //       </div>
+    //     </>
+    //   )}
+    // />
+    <div></div>
   )
 }

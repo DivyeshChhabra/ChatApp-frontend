@@ -28,48 +28,49 @@ export const PresetItem: FC<PresetItemProps> = ({ preset }) => {
   const modelDetails = LLM_LIST.find(model => model.modelId === preset.model)
 
   return (
-    <SidebarItem
-      item={preset}
-      isTyping={isTyping}
-      contentType="presets"
-      icon={
-        <ModelIcon
-          provider={modelDetails?.provider || "custom"}
-          height={30}
-          width={30}
-        />
-      }
-      updateState={{
-        name,
-        description,
-        include_profile_context: presetChatSettings.includeProfileContext,
-        include_workspace_instructions:
-          presetChatSettings.includeWorkspaceInstructions,
-        context_length: presetChatSettings.contextLength,
-        model: presetChatSettings.model,
-        prompt: presetChatSettings.prompt,
-        temperature: presetChatSettings.temperature
-      }}
-      renderInputs={() => (
-        <>
-          <div className="space-y-1">
-            <Label>Name</Label>
+    // <SidebarItem
+    //   item={preset}
+    //   isTyping={isTyping}
+    //   contentType="presets"
+    //   icon={
+    //     <ModelIcon
+    //       provider={modelDetails?.provider || "custom"}
+    //       height={30}
+    //       width={30}
+    //     />
+    //   }
+    //   updateState={{
+    //     name,
+    //     description,
+    //     include_profile_context: presetChatSettings.includeProfileContext,
+    //     include_workspace_instructions:
+    //       presetChatSettings.includeWorkspaceInstructions,
+    //     context_length: presetChatSettings.contextLength,
+    //     model: presetChatSettings.model,
+    //     prompt: presetChatSettings.prompt,
+    //     temperature: presetChatSettings.temperature
+    //   }}
+    //   renderInputs={() => (
+    //     <>
+    //       <div className="space-y-1">
+    //         <Label>Name</Label>
 
-            <Input
-              placeholder="Preset name..."
-              value={name}
-              onChange={e => setName(e.target.value)}
-              maxLength={PRESET_NAME_MAX}
-            />
-          </div>
+    //         <Input
+    //           placeholder="Preset name..."
+    //           value={name}
+    //           onChange={e => setName(e.target.value)}
+    //           maxLength={PRESET_NAME_MAX}
+    //         />
+    //       </div>
 
-          <ChatSettingsForm
-            chatSettings={presetChatSettings as any}
-            onChangeChatSettings={setPresetChatSettings}
-            useAdvancedDropdown={true}
-          />
-        </>
-      )}
-    />
+    //       <ChatSettingsForm
+    //         chatSettings={presetChatSettings as any}
+    //         onChangeChatSettings={setPresetChatSettings}
+    //         useAdvancedDropdown={true}
+    //       />
+    //     </>
+    //   )}
+    // />
+    <div></div>
   )
 }
