@@ -2,6 +2,7 @@
 
 import { createChatFiles } from "@/db/chat-files"
 import { createChat } from "@/db/chats"
+import { createThread, getThreadByChatId } from "@/db/threads"
 import { createMessageFileItems } from "@/db/message-file-items"
 import { createMessages, updateMessage } from "@/db/messages"
 import { uploadMessageImage } from "@/db/storage/message-images"
@@ -22,6 +23,8 @@ import {
 import React from "react"
 import { toast } from "sonner"
 import { v4 as uuidv4 } from "uuid"
+
+var threadId: string
 
 export const validateChatSettings = (
   chatSettings: ChatSettings | null,
@@ -218,13 +221,35 @@ export const handleHostedChat = async (
     formattedMessages = draftMessages
   }
 
-  const apiEndpoint =
-    provider === "custom" ? "/api/chat/custom" : `/api/chat/${provider}`
+  // const apiEndpoint =
+  //   provider === "custom" ? "/api/chat/custom" : `/api/chat/${provider}`
 
+  // const requestBody = {
+  //   chatSettings: payload.chatSettings,
+  //   messages: formattedMessages,
+  //   customModelId: provider === "custom" ? modelData.hostedId : ""
+  // }
+
+  const chatMessages = payload.chatMessages
+
+  if (chatMessages.length > 1) {
+    var chatId = chatMessages[chatMessages.length - 2].message.chat_id
+
+    const existingThread = await getThreadByChatId(chatId)
+    if (existingThread) {
+      threadId = existingThread.id
+    }
+  } else {
+    threadId = uuidv4()
+  }
+
+  const apiEndpoint =
+    process.env.NEXT_PUBLIC_BACKEND_DOMAIN + `/api/v1/chat/${threadId}`
+
+  const messageContent = chatMessages[chatMessages.length - 1].message.content
   const requestBody = {
-    chatSettings: payload.chatSettings,
-    messages: formattedMessages,
-    customModelId: provider === "custom" ? modelData.hostedId : ""
+    body: messageContent,
+    client_id: 10
   }
 
   const response = await fetchChatResponse(
@@ -257,8 +282,22 @@ export const fetchChatResponse = async (
   setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>,
   setChatMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>
 ) => {
+  const tokenResponse = await fetch("/api/session")
+
+  if (!tokenResponse.ok) {
+    throw new Error("Failed to fetch JWT token")
+  }
+
+  const responseData = await tokenResponse.json()
+
+  const jwtToken = responseData.token
+
   const response = await fetch(url, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwtToken}`
+    },
     body: JSON.stringify(body),
     signal: controller.signal
   })
@@ -383,6 +422,11 @@ export const handleCreateChat = async (
   )
 
   setChatFiles(prev => [...prev, ...newMessageFiles])
+
+  await createThread({
+    id: threadId,
+    chat_id: createdChat.id
+  })
 
   return createdChat
 }
