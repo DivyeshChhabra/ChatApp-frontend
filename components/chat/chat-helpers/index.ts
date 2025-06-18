@@ -248,8 +248,7 @@ export const handleHostedChat = async (
 
   const messageContent = chatMessages[chatMessages.length - 1].message.content
   const requestBody = {
-    body: messageContent,
-    client_id: 10
+    body: messageContent
   }
 
   const response = await fetchChatResponse(
@@ -288,15 +287,14 @@ export const fetchChatResponse = async (
     throw new Error("Failed to fetch JWT token")
   }
 
-  const responseData = await tokenResponse.json()
+  // const responseData = await tokenResponse.json()
 
-  const jwtToken = responseData.token
+  // const jwtToken = responseData.token
 
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwtToken}`
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(body),
     signal: controller.signal
